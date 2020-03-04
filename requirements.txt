@@ -1,0 +1,5 @@
+pybids>=0.9.1
+git+https://github.com/nilearn/nilearn.git@2df00ffb1826550b9c8e6497c7c67756e2188039
+scikit-learn>=0.22.1
+pandas>=0.25.0
+joblib
