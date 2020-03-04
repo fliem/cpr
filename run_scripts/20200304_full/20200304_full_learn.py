@@ -101,7 +101,7 @@ main("/data/in",
      clinical_feature_file=Path("/data/features/clinical_features_X_clinsessionn.pkl"),
      target_file=Path("/data/features/slopes_y.pkl"),
      fs_license_file="/data/misc/license.txt", test_run=False,
-     n_splits=2, #fixme 1000
+     n_splits=1000,
      model_name="basic+fmripca100",
      model_type="basic+fmripca100",
      modalities=[
