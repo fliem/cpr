@@ -105,16 +105,16 @@ main("/data/in",
      model_name="ridgecv+fmripca100",
      model_type="ridgecv+fmripca100",
      modalities=[
-         # 'clinical',
-         # 'structGlobScort',
-         # 'structural',
-         # 'fullcon',
-         # #
-         # 'clinical+structGlobScort',
-         # 'clinical+structural',
-         # 'clinical+fullcon',
-         # #
-         # 'clinical+structGlobScort+fullcon',
+         'clinical',
+         'structGlobScort',
+         'structural',
+         'fullcon',
+         #
+         'clinical+structGlobScort',
+         'clinical+structural',
+         'clinical+fullcon',
+         #
+         'clinical+structGlobScort+fullcon',
      ],
      verbose=True,
      n_jobs_outer=None)
