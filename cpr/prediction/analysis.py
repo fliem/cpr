@@ -93,7 +93,7 @@ def calc_metrics(df, y_cols=['sob_slope', 'mmse_slope'], metric_names=['r2', 'ma
     xxxx	mini	    0	    -0.16	        0.11	        -0.19	    -0.12
 
     Returns df like
-    modality	split	r2_sob	pearsonr2_sob	r2_all
+    modality	split	r2_sob	pearsonr2_sob	r2_average
     mini	    0	    0.31	0.21	        0.26
     """
     y_pred_cols = [f"{c}_pred" for c in y_cols]
@@ -137,12 +137,12 @@ def calc_metrics(df, y_cols=['sob_slope', 'mmse_slope'], metric_names=['r2', 'ma
 
     if len(y_cols) > 1:
         if 'r2' in metric_names:
-            metrics['r2_all'] = df.groupby(group_cols).apply(r2, y_cols, y_pred_cols)
+            metrics['r2_average'] = df.groupby(group_cols).apply(r2, y_cols, y_pred_cols)
         if 'f1' in metric_names:
-            metrics['f1_all'] = df.groupby(group_cols).apply(f1, y_cols, y_pred_cols)
+            metrics['f1_average'] = df.groupby(group_cols).apply(f1, y_cols, y_pred_cols)
         if 'pearsonr2' in metric_names:
             pearson_cols = [f'pearsonr2_{c}' for c in y_cols]
-            metrics['pearsonr2_all'] = metrics[pearson_cols].mean(axis=1)
+            metrics['pearsonr2_average'] = metrics[pearson_cols].mean(axis=1)
 
     metrics["kind"] = kind
 
@@ -199,19 +199,19 @@ def load_and_format_fi(learning_dir, model_name, modalities, n_splits=None):
 def metrics_to_long(df, metric_type, y_cols=['sob_slope', 'mmse_slope']):
     """
     requires df like
-    modality	split	r2_sob	pearsonr2_sob	r2_all
+    modality	split	r2_sob	pearsonr2_sob	r2_average
     mini	    0	    0.31	0.21	        0.26
 
     returns df like
 	modality	split	kind	target	r2
-    0	mini	0	    test	all	    0.26
+    0	mini	0	    test	average	    0.26
     """
     allowed_metrics = ['pearsonr2', 'r2', 'f1', 'mae']
     if metric_type not in allowed_metrics:
         raise Exception(metric_type)
 
     if (metric_type in ['r2', 'f1', 'pearsonr2']) and (len(y_cols) > 1):
-        value_vars = [f'{metric_type}_all']
+        value_vars = [f'{metric_type}_average']
     else:
         value_vars = []
     value_vars += [f"{metric_type}_{c}" for c in y_cols]
