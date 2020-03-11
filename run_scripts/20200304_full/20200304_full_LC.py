@@ -95,7 +95,7 @@ from pathlib import Path
 best_cv_parameters_lcurve = \
     {'clinical': {'randomforestregressor__n_estimators': 256,
                   'randomforestregressor__max_features': 'sqrt',
-                  'randomforestregressor__max_depth': 15.0,
+                  'randomforestregressor__max_depth': 20.0,
                   'randomforestregressor__criterion': 'mse'},
      'clinical+fullcon': {'randomforestregressor__n_estimators': 256,
                           'randomforestregressor__max_features': 'sqrt',
@@ -108,23 +108,8 @@ best_cv_parameters_lcurve = \
      'clinical+structGlobScort+fullcon': {'randomforestregressor__n_estimators': 256,
                                           'randomforestregressor__max_features': 'sqrt',
                                           'randomforestregressor__max_depth': 40.0,
-                                          'randomforestregressor__criterion': 'mae'},
-     'clinical+structural': {'randomforestregressor__n_estimators': 256,
-                             'randomforestregressor__max_features': 'sqrt',
-                             'randomforestregressor__max_depth': 15.0,
-                             'randomforestregressor__criterion': 'mse'},
-     'fullcon': {'randomforestregressor__n_estimators': 256,
-                 'randomforestregressor__max_features': 'sqrt',
-                 'randomforestregressor__max_depth': 3.0,
-                 'randomforestregressor__criterion': 'mse'},
-     'structGlobScort': {'randomforestregressor__n_estimators': 256,
-                         'randomforestregressor__max_features': 'sqrt',
-                         'randomforestregressor__max_depth': 3.0,
-                         'randomforestregressor__criterion': 'mse'},
-     'structural': {'randomforestregressor__n_estimators': 256,
-                    'randomforestregressor__max_features': 'sqrt',
-                    'randomforestregressor__max_depth': 10.0,
-                    'randomforestregressor__criterion': 'mse'}}
+                                          'randomforestregressor__criterion': 'mae'}
+     }
 
 main("/data/in",
      "/data/out",
@@ -140,16 +125,12 @@ main("/data/in",
      model_name="basic+fmripca100",
      model_type="basic+fmripca100",
      modalities=[
-         'clinical',
-         'structGlobScort',
-         'structural',
-         'fullcon',
+         "clinical",
          #
-         'clinical+structGlobScort',
-         'clinical+structural',
-         'clinical+fullcon',
+         "clinical+structGlobScort",
+         "clinical+fullcon",
          #
-         'clinical+structGlobScort+fullcon',
+         "clinical+structGlobScort+fullcon"
      ],
      verbose=True,
      n_jobs_outer=None,
