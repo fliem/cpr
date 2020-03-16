@@ -86,7 +86,7 @@ def load_and_format_premuted_predictions(learning_dir, model_name, modalities, y
 
 
 def calc_metrics(df, y_cols=['sob_slope', 'mmse_slope'], metric_names=['r2', 'mae'], group_cols=['modality', 'split'],
-                 kind="", weight_col=None):
+                 kind="", weight_col=None, return_average=False):
     """
     requires df like
     subject	modality	split	mmse_slope_pred	sob_slope_pred	mmse_slope	sob_slope
@@ -135,14 +135,15 @@ def calc_metrics(df, y_cols=['sob_slope', 'mmse_slope'], metric_names=['r2', 'ma
         if 'f1' in metric_names:
             metrics[f'f1_{y_col}'] = df.groupby(group_cols).apply(f1, y_col, y_pred_col, weight_col)
 
-    if len(y_cols) > 1:
-        if 'r2' in metric_names:
-            metrics['r2_average'] = df.groupby(group_cols).apply(r2, y_cols, y_pred_cols)
-        if 'f1' in metric_names:
-            metrics['f1_average'] = df.groupby(group_cols).apply(f1, y_cols, y_pred_cols)
-        if 'pearsonr2' in metric_names:
-            pearson_cols = [f'pearsonr2_{c}' for c in y_cols]
-            metrics['pearsonr2_average'] = metrics[pearson_cols].mean(axis=1)
+    if return_average:
+        if len(y_cols) > 1:
+            if 'r2' in metric_names:
+                metrics['r2_average'] = df.groupby(group_cols).apply(r2, y_cols, y_pred_cols)
+            if 'f1' in metric_names:
+                metrics['f1_average'] = df.groupby(group_cols).apply(f1, y_cols, y_pred_cols)
+            if 'pearsonr2' in metric_names:
+                pearson_cols = [f'pearsonr2_{c}' for c in y_cols]
+                metrics['pearsonr2_average'] = metrics[pearson_cols].mean(axis=1)
 
     metrics["kind"] = kind
 
@@ -196,7 +197,7 @@ def load_and_format_fi(learning_dir, model_name, modalities, n_splits=None):
     return df
 
 
-def metrics_to_long(df, metric_type, y_cols=['sob_slope', 'mmse_slope']):
+def metrics_to_long(df, metric_type, y_cols=['sob_slope', 'mmse_slope'], includes_average=False):
     """
     requires df like
     modality	split	r2_sob	pearsonr2_sob	r2_average
@@ -210,7 +211,7 @@ def metrics_to_long(df, metric_type, y_cols=['sob_slope', 'mmse_slope']):
     if metric_type not in allowed_metrics:
         raise Exception(metric_type)
 
-    if (metric_type in ['r2', 'f1', 'pearsonr2']) and (len(y_cols) > 1):
+    if (metric_type in ['r2', 'f1', 'pearsonr2']) and (len(y_cols) > 1) and includes_average:
         value_vars = [f'{metric_type}_average']
     else:
         value_vars = []
