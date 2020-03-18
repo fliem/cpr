@@ -260,8 +260,8 @@ def compare_r2_distributions(df, m1_col, m2_col):
     Compoares two distributions of R2 values
 
     returns Series with
-    - "m1_better_m2": ratio of R2 values m1>m2
-    - "m2_better_m1": ratio of R2 values m2>m1
+    - "m1_better_m2": % of R2 values m1>m2
+    - "m2_better_m1": % of R2 values m2>m1
     - "n_splits"
     - "median_diff": median difference of splits (m2-m1)
 
@@ -269,8 +269,8 @@ def compare_r2_distributions(df, m1_col, m2_col):
     df_in.groupby("g").apply(compare_r2_distributions, "m1_r2", "m2_r2")
     """
     comp = pd.Series({
-        "m1_better_m2": (df[m1_col] > df[m2_col]).mean(),
-        "m2_better_m1": (df[m2_col] > df[m1_col]).mean(),
+        "m1_better_m2": (df[m1_col] > df[m2_col]).mean()*100.,
+        "m2_better_m1": (df[m2_col] > df[m1_col]).mean()*100.,
         "n_splits": len(df),
         "median_diff": (df[m2_col] - df[m1_col]).median()
 
