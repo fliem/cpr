@@ -1,8 +1,6 @@
 from pathlib import Path
 import pandas as pd
 from sklearn.metrics import r2_score, mean_absolute_error, f1_score
-import numpy as np
-from scipy import stats
 
 
 def load_and_format_learning_curves(learning_dir, model_name, modalities):
@@ -225,34 +223,6 @@ def metrics_to_long(df, metric_type, y_cols=['sob_slope', 'mmse_slope'], include
         long["target"] = long["target"].str.replace(f"{m}_", "")
 
     return long
-
-
-def label_median(ax, max_median_line=True, font_size=10):
-    # https://stackoverflow.com/questions/38649501/labeling-boxplot-in-seaborn-with-median-value
-    lines = ax.get_lines()
-    categories = ax.get_yticks()
-    max_x = max([lines[1 + cat * 6].get_xdata()[0] for cat in categories])
-    max_median = max([lines[4 + cat * 6].get_xdata()[0] for cat in categories])
-
-    for cat in categories:
-        # every 4th line at the interval of 6 is median line
-        # 0 -> p25 1 -> p75 2 -> lower whisker 3 -> upper whisker 4 -> p50 5 -> upper extreme value
-        # x = round(lines[4+cat*6].get_xdata()[0],1)
-        x = round(lines[4 + cat * 6].get_xdata()[0], 2)
-        x_pos = lines[1 + cat * 6].get_xdata()[0]
-
-        ax.text(
-            x_pos + max_x * .05,
-            cat - categories.max() * .01,
-            f'{x}',
-            ha='left',
-            va='bottom',
-            fontweight='bold',
-            size=font_size,
-            color='black',
-        )
-    if max_median_line:
-        ax.axvline(max_median, color="k", ls="--")
 
 
 def compare_r2_distributions(df, m1_col, m2_col):
