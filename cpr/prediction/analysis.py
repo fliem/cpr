@@ -234,6 +234,7 @@ def compare_r2_distributions(df, m1_col, m2_col):
     - "m2_better_m1": % of R2 values m2>m1
     - "n_splits"
     - "median_diff": median difference of splits (m2-m1)
+    - "std_diff" standard deviation of differences
 
     compare_r2_distributions(df_in, "m1_r2", "m2_r2")
     df_in.groupby("g").apply(compare_r2_distributions, "m1_r2", "m2_r2")
@@ -242,7 +243,8 @@ def compare_r2_distributions(df, m1_col, m2_col):
         "m1_better_m2": (df[m1_col] > df[m2_col]).mean()*100.,
         "m2_better_m1": (df[m2_col] > df[m1_col]).mean()*100.,
         "n_splits": len(df),
-        "median_diff": (df[m2_col] - df[m1_col]).median()
+        "median_diff": (df[m2_col] - df[m1_col]).median(),
+        "std_diff": (df[m2_col] - df[m1_col]).std(),
 
     })
     return comp
