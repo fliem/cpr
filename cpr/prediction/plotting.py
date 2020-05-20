@@ -39,7 +39,7 @@ def get_boxplot_with_checkerboard(selected_data, target_order, modalities_ranked
 
     sns.heatmap(checkerboard, cbar=False, cmap=cmap, linewidths=.2, ax=ax)
     ax.set_xticklabels(order, rotation=45, ha="left", va="bottom", rotation_mode="default")
-    #ax.xaxis.set_ticks_position('none')
+    # ax.xaxis.set_ticks_position('none')
     ax.xaxis.tick_top()
     ax.yaxis.set_major_locator(plt.NullLocator())
     ax.set_ylabel("modality")
@@ -55,6 +55,8 @@ def get_boxplot_with_checkerboard(selected_data, target_order, modalities_ranked
             order=modalities_ranked,
             palette=mod_colors,
             ax=ax,
+            fliersize=2,
+            flierprops={"alpha": .3}
         )
 
         if violin_x:
